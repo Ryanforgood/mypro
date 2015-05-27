@@ -23,9 +23,9 @@ class Untitled(unittest.TestCase):
         driver = self.driver
         driver.get(self.base_url + "/")
         driver.find_element_by_id("signin_username").clear()
-        driver.find_element_by_id("signin_username").send_keys("admin")
+        driver.find_element_by_id("signin_username").send_keys("")
         driver.find_element_by_id("signin_password").clear()
-        driver.find_element_by_id("signin_password").send_keys("TitanSec123")
+        driver.find_element_by_id("signin_password").send_keys("")
         driver.find_element_by_css_selector("button.btn").click()
         self.verificationErrors = []
         self.accept_next_alert = True

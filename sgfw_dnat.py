@@ -6,9 +6,10 @@ import sys
 
 
 if __name__ == '__main__':
-    conn = httplib.HTTPSConnection("192.168.36.165")
+    host = ""
+    conn = httplib.HTTPSConnection(host)
     
-    params = urllib.urlencode({"username":"admin", "password":"admin"})
+    params = urllib.urlencode({"username":"usernanme", "password":"password"})
     headers = {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8", "Accept": "*/*"}
     conn.request("POST", "/login", params, headers)
     r = conn.getresponse()
@@ -19,10 +20,7 @@ if __name__ == '__main__':
     r.read()
     
     # dnat
-    params = urllib.urlencode({"enable":"1", "alias":"1234", "src_type":"2", "src_ip":"", "src_object":"any",
-                               "src_isp":"any", "src_reverse":"0", "dest":"eth1:192.168.1.1", "protocol":"TCP",
-                               "protocol_port":"55", "action_type":"2", "convert_to":"2.2.2.2", "convert_port_type":"1",
-                               "convert_port":"", "acl_enable":"0"})
+    params =urllib.urlencode({"param1":"value1","param2":"value2"})
     headers = {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8", "Accept": "*/*"}
     conn.request("POST", "/dnat/create", params, headers)
     r2 = conn.getresponse()

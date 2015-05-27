@@ -15,7 +15,7 @@ import paramiko,sqlite3
 
 
 host = '192.168.36.164'
-password = '050bdd95'
+password = 'password'
 
 def logresult(message):
     fres = open('result.log','a')
@@ -96,7 +96,7 @@ def getdb():
     sftp.get(remotepath1, localpath1)
     t.close()
 
-def getdbinfo(keyword,tablename,searchkey,searchvalue,dbs= "d:\\sgfw.db3"):
+def getdbinfo(keyword,tablename,searchkey,searchvalue,dbs= "d:\\db.db3"):
     getdb()
     cx = sqlite3.connect(dbs)
     cu = cx.cursor()
@@ -125,7 +125,4 @@ def getiptablesconfig(uuid,rulepre,mainchain):
     ssh.close()
 
 if __name__ == '__main__':
-    # getprocessinfo('192.168.36.164','050bdd95','tips','/secone/tips/bin/tips')
-    # getconfigfile(host='192.168.36.165',password='8e87e3ca',remotefile='/etc/dhcp/dhcpd.conf')
-    # compare('dhcpd.conf','dhcpd1.conf')
-    getiptablesconfig(getdbinfo('uuid','sgfw_acl','alias','pptp-100内网'),'ACL_','SGFW_FWD_ACL')
+    getdb()

@@ -13,9 +13,9 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 def testworkmail():
-    HOST = 'smtp.titansec.com.cn'
-    TO = ['xuelj@titansec.com.cn','wangyan@titansec.com.cn','guyy@titansec.com.cn','caoxd@titansec.com.cn']
-    FROM = 'xuelj@titansec.com.cn'
+    HOST = 'smtp.mail.com.cn'
+    TO = ['your1@mail.com.cn','your2@mail.com.cn','your3@mail.com.cn','your4@mail.com.cn']
+    FROM = 'your@mail.com.cn'
     SUBJECT = '本周工作'
     text = "各位好，本周的工作如附件所示，请大家自行领取，注意更新进度"
     # BODY = string.join((

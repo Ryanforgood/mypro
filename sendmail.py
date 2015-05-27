@@ -6,8 +6,8 @@ import string
 
 HOST = 'smtp.titansec.com.cn'
 SUBJECT = 'the worklist of This week for SGFW'
-TO = 'xuelj@titansec.com.cn'
-FROM = 'xuelj@titansec.com.cn'
+TO = 'reciever@mail'
+FROM = 'sender@mail'
 text = 'test'
 
 BODY = string.join((
@@ -20,6 +20,6 @@ BODY = string.join((
 server = smtplib.SMTP()
 server.connect(HOST,"25")
 # server.starttls()
-server.login("xuelj@titansec.com.cn","titan1")
+server.login("sender@mail","password")
 server.sendmail(FROM,[TO],BODY)
 server.quit()

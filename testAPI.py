@@ -18,18 +18,15 @@ import sys
 import paramiko,sqlite3
 
 def getfile():
-    t = paramiko.Transport("192.168.36.165",22)
-    t.connect(username = "root", password = "8e87e3ca")
+    t = paramiko.Transport("host",22)
+    t.connect(username = "root", password = "password")
     sftp = paramiko.SFTPClient.from_transport(t)
-    remotepath='/secone/sgfw/data/sgfw.db3'
-    localpath='d:\\sgfw.db3'
-    remotepath1='/secone/sgfw/data/localauth.db3'
-    localpath1='d:\\localauth.db3'
+    remotepath='/your/remote/file'
+    localpath='/your/local/file/path'
     sftp.get(remotepath, localpath)
-    sftp.get(remotepath1, localpath1)
     t.close()
 
-def getinfo(keyword,tablename,searchkey,searchvalue,dbs= "d:\\sgfw.db3"):
+def getinfo(keyword,tablename,searchkey,searchvalue,dbs= "d:\\db.db3"):
     getfile()
     cx = sqlite3.connect(dbs)
     cu = cx.cursor()
@@ -45,30 +42,12 @@ def getconfig(configname):
          aa = i.replace('\n','').split('=')
          p1[aa[0]]=aa[1]
      if configname == 'inetv4addr_eth1.txt':
-         p1['uuid'] = getinfo('uuid','sgfw_inet_ipv4','dev','eth1')
-     if configname == 'dhcpvlan22.txt':
-         p1['pool_member'] = getinfo('uuid','sgfw_dhcp_pool','alias','vlan22')
-     if configname == 'dhcpvlan33.txt':
-         p1['pool_member'] = getinfo('uuid','sgfw_dhcp_pool','alias','vlan33')
-     if configname == 'connlimit.txt':
-         p1['source'] = getinfo('scope_parent','sgfw_obj_address','alias','99.99.99.0/24')
-     if configname == 'ipsecmobile.txt':
-         p1['p1']=getinfo('uuid','sgfw_ipsec_p1','alias','des-3des-md5-sha1-dh_group2')
-         p1['p2']=getinfo('uuid','sgfw_ipsec_p2','alias','des_3des-md5_sha1-PFS2')
-     if configname == 'snat.txt':
-         p1['source'] = getinfo('scope_parent','sgfw_obj_address','alias','99.99.99.0/24')
-     if configname == 'ssltunnelrule.txt':
-         bb= getinfo('group_info','sgfw_vpn_user','username','test','d:\\localauth.db3')
-         p1['usergroup']=bb[2:-2]
-     if configname == 'sslwebrule.txt':
-         bb= getinfo('group_info','sgfw_vpn_user','username','test','d:\\localauth.db3')
-         p1['usergroup']=bb[2:-2]
-         p1['resource']=getinfo('uuid','sgfw_sslvpn_resource','alias','web')
+         p1['uuid'] = getinfo('uuid','table','param','value')
      return p1
 def runconfig(p1,apipath):
-    conn = httplib.HTTPConnection("192.168.36.165","8080")
+    conn = httplib.HTTPConnection("host","port")
     headers = {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8", "Accept": "*/*"}
-    params = urllib.urlencode({"username":"admin", "password":"admin"})
+    params = urllib.urlencode({"username":"username", "password":"password"})
     conn.request("POST", "/login", params, headers)
     r = conn.getresponse()
     if r.status != 200 and r.status != 302:
@@ -78,7 +57,7 @@ def runconfig(p1,apipath):
     rrr = r.read()
     print urllib.urlencode(p1)
     cookie = json.loads(rrr)["Cookie"]
-    headers = {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8", "Accept": "*/*","Referer":"http://192.168.36.165:8080/index"}
+    headers = {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8", "Accept": "*/*","Referer":"http://www.test.com/index"}
     headers["Cookie"]="tssession="+cookie
     conn.request("POST", apipath, urllib.urlencode(p1), headers)
     r2 = conn.getresponse()
@@ -114,31 +93,4 @@ def logMessage(message):
 
 
 if __name__ == '__main__':
-    # runconfig(getconfig('dnat.txt'),"/dnat/create")
-    runconfig(getconfig('snat.txt'),"/snat/create")
-    # runconfig(getconfig('addr_net.txt'),"/addr/create")
-    # runconfig(getconfig('addr_address.txt'),"/addr/create")
-    # runconfig(getconfig('inetaddrv4_eth1.txt'),"/inet/addrv4Edit")
-    # runconfig(getconfig('vlan1.txt'),"/inet/createVlan")
-    # runconfig(getconfig('vlan2.txt'),"/inet/createVlan")
-    # runconfig(getconfig('vlan1addr.txt'),"/inet/addrv4Create")
-    # runconfig(getconfig('vlan2addr.txt'),"/inet/addrv4Create")
-    # runconfig(getconfig('dhcppool1.txt'),"/dhcp/createPool")
-    # runconfig(getconfig('dhcppool2.txt'),"/dhcp/createPool")
-    # runconfig(getconfig('dhcpvlan22.txt'),"/dhcp/create")
-    # runconfig(getconfig('dhcpvlan33.txt'),"/dhcp/create")
-    # runconfig(getconfig('macbonding.txt'),"/macbind/create")
-    # runconfig(getconfig('arpprotect.txt'),"/sysconfig/setArpConfig")
-    # runconfig(getconfig('ips.txt'),"/ips/create")
-    # runconfig(getconfig('dos.txt'),"/dos/create")
-    # runconfig(getconfig('connlimit.txt'),"/climit/create")
-    # runconfig(getconfig('appcc.txt'),"/appcc/create")
-    # runconfig(getconfig('serverprotect.txt'),"/appcc/createStrategy")
-    # runconfig(getconfig('radius.txt'),"/radiusClient/create")
-    # runconfig(getconfig('vpnuser.txt'),"/sslvpn/createSslvpnUser")
-    # runconfig(getconfig('ssltunnel.txt'),"/sslvpn/tunnelCreate")
-    # runconfig(getconfig('sslweb.txt'),"/sslvpn/resource/create")
-    runconfig(getconfig('ssltunnelrule.txt'),"/sslvpn/role/create")
-    runconfig(getconfig('sslwebrule.txt'),"/sslvpn/role/create")
-    # runconfig(getconfig('ipsecmobile.txt'),"/vpnipsec/setMobielConnConfig")
-    # runconfig(getconfig('pptp.txt'),"/pptp/save")
+    runconfig(getconfig('inetaddrv4_eth1.txt'),"/inet/addrv4Edit")
