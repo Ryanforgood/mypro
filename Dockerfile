@@ -7,7 +7,7 @@ RUN echo "Asia/Shanghai" > /etc/timezone && \
 ADD run.sh /run.sh
 RUN chmod 755 /*.sh
 RUN mkdir -p /var/lock/apache2 && mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
-COPY sample/ /app
+COPY / /app
 
 ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
