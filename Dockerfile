@@ -1,4 +1,5 @@
 FROM debian
+RUN apt-get update
 RUN apt-get install -yq apache2&&\
     rm -rf /var/lib/apt/lists/*
 RUN echo "Asia/Shanghai" > /etc/timezone && \
